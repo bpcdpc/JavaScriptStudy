@@ -6,7 +6,7 @@
     <title>Todo List</title>
   </head>
   <body>
-    <h1>📋 Todos List</h1>
+    <h1>📋 Todo List</h1>
     <div>
       <input id="todoInput" type="text" placeholder="할 일" />
       <button id="addBtn">추가</button>
@@ -28,19 +28,29 @@
         }
 
         // 콘솔에 출력
-        consoleTodos() {
-          console.log("📋 Todos List");
-          this.todos.map((todo) => {
-            console.log(`[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`);
-          });
+        // consoleTodos() {
+        //   console.log("📋 Todos List");
+        //   this.todos.map((todo) => {
+        //     console.log(`[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`);
+        //   });
+        // }
+
+        // Todo 문자열 만들기
+        contentTodo(todo) {
+          const li = document.createElement("li");
+          li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
+          todoList.appendChild(li);
+
+          const button = document.createElement("button");
+          button.setAttribute("id", "delBtn");
+          button.textContent = "삭제";
+          li.appendChild(button);
         }
 
         // DOM에 출력
         listTodos() {
           this.todos.map((todo) => {
-            const li = document.createElement("li");
-            li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
-            todoList.appendChild(li);
+            this.contentTodo(todo);
           });
         }
 
@@ -48,9 +58,7 @@
         listTodo(id) {
           const todo = this.todos.find((todo) => todo.id === id);
           if (todo) {
-            const li = document.createElement("li");
-            li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
-            todoList.appendChild(li);
+            this.contentTodo(todo);
           }
         }
 
