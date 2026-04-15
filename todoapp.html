@@ -25,6 +25,7 @@
             done: false,
           };
           this.todos.push(todo);
+          return todo.id;
         }
 
         // 콘솔에 출력
@@ -39,12 +40,28 @@
         contentTodo(todo) {
           const li = document.createElement("li");
           li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
+          li.setAttribute("data-id", `${todo.id}`);
           todoList.appendChild(li);
 
-          const button = document.createElement("button");
-          button.setAttribute("id", "delBtn");
-          button.textContent = "삭제";
-          li.appendChild(button);
+          const doneBtn = document.createElement("button");
+          doneBtn.setAttribute("class", "doneBtn");
+          doneBtn.textContent = "완료";
+          li.appendChild(doneBtn);
+
+          const delBtn = document.createElement("button");
+          delBtn.setAttribute("class", "delBtn");
+          delBtn.textContent = "삭제";
+          li.appendChild(delBtn);
+
+          const delBtns = document.querySelectorAll(".delBtn");
+          const doneBtns = document.querySelectorAll(".doneBtn");
+
+          delBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const todoId = btn.parentElement.getAttribute("data-id");
+              console.log(todoId);
+            });
+          });
         }
 
         // DOM에 출력
@@ -85,12 +102,10 @@
           return;
         }
         const task = todoInput.value.trim();
-        myTodo.addTodo(task);
+        const insertedId = myTodo.addTodo(task);
         todoInput.value = "";
-        myTodo.listTodo(myTodo.todos.length);
+        myTodo.listTodo(insertedId);
       });
-
-      myTodo.listTodos();
     </script>
   </body>
 </html>
