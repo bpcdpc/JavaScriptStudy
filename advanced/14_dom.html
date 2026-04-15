@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        cursor: pointer;
+      }
+      .active {
+        background: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="title">제목입니다</h1>
+
+    <div class="box">box1</div>
+    <div class="box">box2</div>
+    <p>문단1</p>
+    <p>문단2</p>
+    <input type="text" name="username" value="홍길동" />
+    <input type="text" name="username" value="김철수" />
+
+    <div><p>div 바로 아래에 있는 p 태그</p></div>
+
+    <button class="title_btn">제목 변경</button>
+    <button class="list_btn">목록 변경</button>
+
+    <input class="input" placeholder="입력" />
+    <button class="add_btn">추가</button>
+
+    <ul>
+      <li class="box">1</li>
+      <li class="box">2</li>
+      <li class="box">3</li>
+    </ul>
+
+    <script>
+      const title = document.querySelector("#title");
+      const boxes = document.querySelectorAll(".box");
+      const divp = document.querySelector("div > p");
+      console.log(title);
+      console.log(boxes);
+      console.log(divp);
+
+      const titleBtn = document.querySelector(".title_btn");
+      titleBtn.addEventListener("click", () => {
+        title.textContent = "This is a title.";
+      });
+
+      const listBtn = document.querySelector(".list_btn");
+
+      listBtn.addEventListener("click", () => {
+        const items = document.querySelectorAll("li");
+        items.forEach((item) => {
+          item.style.color = "red";
+        });
+      });
+
+      boxes.forEach((item) => {
+        item.addEventListener("click", () => {
+          item.classList.toggle("active");
+        });
+      });
+
+      const ul = document.querySelector("ul");
+      const addBtn = document.querySelector(".add_btn");
+
+      addBtn.addEventListener("click", () => {
+        const li = document.createElement("li");
+        const lis = ul.querySelectorAll("li");
+        const input = document.querySelector(".input");
+        let value = input.value || lis.length + 1;
+        li.textContent = value;
+        ul.appendChild(li);
+        input.value = "";
+      });
+
+      console.log(document.getElementById("title"));
+      console.log(document.getElementsByClassName("box"));
+      console.log(document.getElementsByTagName("p"));
+      console.log(document.getElementsByName("username"));
+    </script>
+  </body>
+</html>

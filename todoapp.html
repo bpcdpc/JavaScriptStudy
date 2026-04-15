@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+  </head>
+  <body>
+    <h1>📋 Todos List</h1>
+    <div>
+      <input id="todoInput" type="text" placeholder="할 일" />
+      <button id="addBtn">추가</button>
+    </div>
+    <ul id="todoList"></ul>
+    <script>
+      class TodoApp {
+        todos = [];
+        nextId = 1;
+
+        // 추가
+        addTodo(task) {
+          const todo = {
+            id: this.nextId++,
+            task,
+            done: false,
+          };
+          this.todos.push(todo);
+        }
+
+        // 콘솔에 출력
+        consoleTodos() {
+          console.log("📋 Todos List");
+          this.todos.map((todo) => {
+            console.log(`[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`);
+          });
+        }
+
+        // DOM에 출력
+        listTodos() {
+          this.todos.map((todo) => {
+            const li = document.createElement("li");
+            li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
+            todoList.appendChild(li);
+          });
+        }
+
+        // DOM에 1개 출력
+        listTodo(id) {
+          const todo = this.todos.find((todo) => todo.id === id);
+          if (todo) {
+            const li = document.createElement("li");
+            li.textContent = `[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`;
+            todoList.appendChild(li);
+          }
+        }
+
+        // 상태
+        toggleTodo(id) {
+          const todo = this.todos.find((todo) => todo.id === id);
+          if (todo) todo.done = !todo.done;
+        }
+
+        // 삭제
+        removeTodo(id) {
+          this.todos = this.todos.filter((todo) => todo.id !== id);
+        }
+      }
+
+      const myTodo = new TodoApp();
+
+      const todoList = document.querySelector("#todoList");
+      const addBtn = document.querySelector("#addBtn");
+
+      addBtn.addEventListener("click", () => {
+        const todoInput = document.querySelector("#todoInput");
+        if (typeof todoInput.value !== "string" || !todoInput.value.trim()) {
+          return;
+        }
+        const task = todoInput.value.trim();
+        myTodo.addTodo(task);
+        todoInput.value = "";
+        myTodo.listTodo(myTodo.todos.length);
+      });
+
+      myTodo.listTodos();
+    </script>
+  </body>
+</html>
