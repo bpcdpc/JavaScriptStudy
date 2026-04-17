@@ -45,23 +45,25 @@
 
           const doneBtn = document.createElement("button");
           doneBtn.setAttribute("class", "doneBtn");
+          doneBtn.setAttribute("data-id", `${todo.id}`);
           doneBtn.textContent = "완료";
           li.appendChild(doneBtn);
 
           const delBtn = document.createElement("button");
           delBtn.setAttribute("class", "delBtn");
+          delBtn.setAttribute("data-id", `${todo.id}`);
           delBtn.textContent = "삭제";
           li.appendChild(delBtn);
 
-          const delBtns = document.querySelectorAll(".delBtn");
-          const doneBtns = document.querySelectorAll(".doneBtn");
+          // const delBtns = document.querySelectorAll(".delBtn");
+          // const doneBtns = document.querySelectorAll(".doneBtn");
 
-          delBtns.forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const todoId = btn.parentElement.getAttribute("data-id");
-              console.log(todoId);
-            });
-          });
+          // delBtns.forEach((btn) => {
+          //   btn.addEventListener("click", (e) => {
+          //     const todoId = e.target.getAttribute("data-id");
+          //     console.log(todoId);
+          //   });
+          // });
         }
 
         // DOM에 출력
@@ -104,7 +106,19 @@
         const task = todoInput.value.trim();
         const insertedId = myTodo.addTodo(task);
         todoInput.value = "";
+
         myTodo.listTodo(insertedId);
+      });
+
+      todoList.addEventListener("click", (e) => {
+        const btn = e.target.closest(".delBtn");
+        if (!btn) return;
+        const deletedId = parseInt(btn.dataset.id);
+        myTodo.removeTodo(deletedId);
+        // const deletedItem = todoList.querySelector();
+        // const list = document.querySelectorAll("#todoList > li");
+
+        item.remove();
       });
     </script>
   </body>
