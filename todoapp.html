@@ -127,13 +127,13 @@
         let doneBtn = e.target.closest(".doneBtn");
 
         if (delBtn) {
-          const deletedId = parseInt(delBtn.dataset.id);
+          const deletedId = Number(delBtn.dataset.id);
           myTodo.unlistItem(deletedId);
           myTodo.removeTodo(deletedId);
           return;
         }
         if (doneBtn) {
-          const doneId = parseInt(doneBtn.dataset.id);
+          const doneId = Number(doneBtn.dataset.id);
           myTodo.toggleTodo(doneId);
           myTodo.updateItem(doneId);
           return;
