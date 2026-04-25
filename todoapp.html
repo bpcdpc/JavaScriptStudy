@@ -8,16 +8,22 @@
   <body>
     <h1>📋 Todo List</h1>
     <div>
-      <input id="todoInput" type="text" placeholder="할 일" />
-      <button id="addBtn">추가</button>
+      <input id="todo-input" type="text" placeholder="할 일" />
+      <button id="add-button">추가</button>
     </div>
-    <ul id="todoList"></ul>
+    <ul id="todo-list"></ul>
     <script>
       class TodoApp {
         todos = [];
         nextId = 1;
 
-        // 추가
+        // 데이터 가져오기
+        getTodo(id) {
+          const todo = this.todos.find((todo) => todo.id === id);
+          if (todo) return todo;
+        }
+
+        // 데이터 추가
         addTodo(task) {
           const todo = {
             id: this.nextId++,
@@ -28,20 +34,24 @@
           return todo.id;
         }
 
-        // 상태
+        // 데이터 상태
         toggleTodo(id) {
-          const todo = this.todos.find((todo) => todo.id === id);
+          const todo = this.getTodo(id);
           if (todo) todo.done = !todo.done;
         }
 
-        // 삭제
+        // 데이터 삭제
         removeTodo(id) {
           this.todos = this.todos.filter((todo) => todo.id !== id);
-          const todo = document.querySelector(`li[data-id="${id}"]`);
-          todo.remove();
         }
 
-        // Todo 내용 만들기
+        // DOM 가져오기
+        getItem(id) {
+          const item = document.querySelector(`li[data-id="${id}"]`);
+          if (item) return item;
+        }
+
+        // DOM node 내용 만들기
         contentTodo(todo) {
           const li = document.createElement("li");
           li.textContent = ` [${todo.id}] ${todo.task}`;
@@ -66,35 +76,29 @@
           li.appendChild(delBtn);
         }
 
-        // 출력
-        listTodos() {
-          const items = todoList.querySelectorAll("li");
-          [...items].forEach((item) => item.remove());
+        // DOM 출력
+        listItems() {
           this.todos.map((todo) => {
             this.contentTodo(todo);
           });
         }
 
-        // 특정 항목 출력
-        listTodo(id) {
-          const todo = this.todos.find((todo) => todo.id === id);
-          if (todo) {
-            this.contentTodo(todo);
-          }
+        // 특정 DOM 출력
+        listItem(id) {
+          const todo = this.getTodo(id);
+          if (todo) this.contentTodo(todo);
         }
 
-        // 특정 항목 삭제
-        unlistTodo(id) {
-          const item = document.querySelector(`li[data-id="${id}"]`);
-          if (item) {
-            item.remove();
-          }
+        // 특정 DOM 삭제
+        unlistItem(id) {
+          const item = this.getItem(id);
+          if (item) item.remove();
         }
 
-        // 특정 항목 상태 업데이트
-        updateTodo(id) {
-          const todo = this.todos.find((todo) => todo.id === id);
-          const item = document.querySelector(`li[data-id="${id}"]`);
+        // 특정 DOM 업데이트
+        updateItem(id) {
+          const todo = this.getTodo(id);
+          const item = this.getItem(id);
           if (item && todo) {
             const check = item.querySelector("span");
             check.textContent = `[${todo.done ? "✅" : " "}]`;
@@ -104,31 +108,35 @@
 
       const myTodo = new TodoApp();
 
-      const todoList = document.querySelector("#todoList");
-      const addBtn = document.querySelector("#addBtn");
+      const todoList = document.querySelector("#todo-list");
+      const addBtn = document.querySelector("#add-button");
 
       addBtn.addEventListener("click", () => {
-        const todoInput = document.querySelector("#todoInput");
+        const todoInput = document.querySelector("#todo-input");
         if (typeof todoInput.value !== "string" || !todoInput.value.trim()) {
           return;
         }
-        const task = todoInput.value.trim();
-        const insertedId = myTodo.addTodo(task);
-        myTodo.listTodo(insertedId);
+        const job = todoInput.value.trim();
+        const insertedId = myTodo.addTodo(job);
+        myTodo.listItem(insertedId);
         todoInput.value = "";
       });
 
       todoList.addEventListener("click", (e) => {
-        const delBbtn = e.target.closest(".delBtn");
-        if (delBbtn) {
-          const deletedId = parseInt(e.target.dataset.id);
+        let delBtn = e.target.closest(".delBtn");
+        let doneBtn = e.target.closest(".doneBtn");
+
+        if (delBtn) {
+          const deletedId = parseInt(delBtn.dataset.id);
+          myTodo.unlistItem(deletedId);
           myTodo.removeTodo(deletedId);
+          return;
         }
-        const doneBtn = e.target.closest(".doneBtn");
         if (doneBtn) {
-          const doneId = parseInt(e.target.dataset.id);
+          const doneId = parseInt(doneBtn.dataset.id);
           myTodo.toggleTodo(doneId);
-          myTodo.updateTodo(doneId);
+          myTodo.updateItem(doneId);
+          return;
         }
       });
     </script>
