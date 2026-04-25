@@ -3,10 +3,10 @@ class TodoApp {
   nextId = 1;
 
   // 추가
-  addTodo(task) {
+  addTodo(job) {
     const todo = {
       id: this.nextId++,
-      task,
+      job,
       done: false,
     };
     this.todos.push(todo);
@@ -16,7 +16,7 @@ class TodoApp {
   listTodos() {
     console.log("📋 Todos List");
     this.todos.map((todo) => {
-      console.log(`[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.task}`);
+      console.log(`[${todo.done ? "✅" : " "}] ${todo.id}: ${todo.job}`);
     });
   }
 

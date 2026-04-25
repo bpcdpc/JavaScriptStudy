@@ -24,10 +24,10 @@
         }
 
         // 데이터 추가
-        addTodo(task) {
+        addTodo(job) {
           const todo = {
             id: this.nextId++,
-            task,
+            job,
             done: false,
           };
           this.todos.push(todo);
@@ -54,7 +54,7 @@
         // DOM node 내용 만들기
         contentTodo(todo) {
           const li = document.createElement("li");
-          li.textContent = ` [${todo.id}] ${todo.task}`;
+          li.textContent = ` [${todo.id}] ${todo.job}`;
           li.setAttribute("data-id", `${todo.id}`);
           todoList.appendChild(li);
 
