@@ -109,10 +109,10 @@
       const myTodo = new TodoApp();
 
       const todoList = document.querySelector("#todo-list");
+      const todoInput = document.querySelector("#todo-input");
       const addBtn = document.querySelector("#add-button");
 
       addBtn.addEventListener("click", () => {
-        const todoInput = document.querySelector("#todo-input");
         if (typeof todoInput.value !== "string" || !todoInput.value.trim()) {
           return;
         }
